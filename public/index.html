@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refugee Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: #07192f;
+        }
+        
+        .header {
+            background-color: #07192f;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .igm-status {
+            background-color: #33e0c4;
+            color: #07192f;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .nav-tabs {
+            background-color: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 2rem;
+        }
+        
+        .nav-tabs-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-tab {
+            padding: 1rem 0;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            color: #07192f;
+            border-bottom-color: #33e0c4;
+        }
+        
+        .nav-tab:hover {
+            color: #07192f;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #07192f;
+        }
+        
+        .metric {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #33e0c4;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #07192f;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #33e0c4;
+            box-shadow: 0 0 0 3px rgba(51, 224, 196, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 0.875rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background-color: #33e0c4;
+            color: #07192f;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2dd4b4;
+        }
+        
+        .btn-secondary {
+            background-color: #ffca58;
+            color: #07192f;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ffc132;
+        }
+        
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #07192f;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-completed {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        
+        .footer {
+            background-color: #07192f;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.875rem;
+        }
+        
+        .contact-log-entry {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: white;
+        }
+        
+        .contact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-date {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .contact-type {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">Refugee Management System</h1>
+            <div class="igm-status">IGM Status: Active</div>
+        </div>
+    </header>
+    
+    <nav class="nav-tabs">
+        <div class="nav-tabs-content">
+            <div class="nav-tab active" data-tab="dashboard">Dashboard</div>
+            <div class="nav-tab" data-tab="intake">Intake Form</div>
+            <div class="nav-tab" data-tab="contact">Contact Log</div>
+            <div class="nav-tab" data-tab="search">Search</div>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Total Refugees</h3>
+                    </div>
+                    <div class="metric">2,847</div>
+                    <p style="color: #64748b; margin-top: 0.5rem;">Active cases</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">New Arrivals (30 days)</h3>
+                    </div>
+                    <div class="metric">156</div>
+                    <p style="color: #64748b; margin-top: 0.5rem;">Pending documentation</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Service Referrals</h3>
+                    </div>
+                    <div class="metric">1,234</div>
+                    <p style="color: #64748b; margin-top: 0.5rem;">This month</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Durable Solutions</h3>
+                    </div>
+                    <div class="metric">89</div>
+                    <p style="color: #64748b; margin-top: 0.5rem;">In progress</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Activities</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>UN Number</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Assigned Agency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ahmad Hassan</td>
+                            <td>UN-2024-001234</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>2024-01-15</td>
+                            <td>UNHCR</td>
+                        </tr>
+                        <tr>
+                            <td>Fatima Al-Zahra</td>
+                            <td>UN-2024-001235</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>2024-01-14</td>
+                            <td>WFP</td>
+                        </tr>
+                        <tr>
+                            <td>Omar Abdullah</td>
+                            <td>UN-2024-001236</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td>2024-01-13</td>
+                            <td>IOM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="intake" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Refugee Intake Form</h3>
+                </div>
+                
+                <form class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" placeholder="Enter full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select">
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Country of Origin</label>
+                        <select class="form-select">
+                            <option value="">Select country</option>
+                            <option value="afghanistan">Afghanistan</option>
+                            <option value="syria">Syria</option>
+                            <option value="somalia">Somalia</option>
+                            <option value="sudan">Sudan</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Arrival Date</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">UN Number</label>
+                        <input type="text" class="form-input" placeholder="UN-YYYY-XXXXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Family Size</label>
+                        <input type="number" class="form-input" min="1" placeholder="Number of family members">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="tel" class="form-input" placeholder="+1234567890">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Education Level</label>
+                        <select class="form-select">
+                            <option value="">Select education level</option>
+                            <option value="none">No formal education</option>
+                            <option value="primary">Primary education</option>
+                            <option value="secondary">Secondary education</option>
+                            <option value="tertiary">Tertiary education</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Language Spoken</label>
+                        <input type="text" class="form-input" placeholder="Primary language">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Medical Needs</label>
+                        <select class="form-select">
+                            <option value="">Select medical priority</option>
+                            <option value="none">No immediate needs</option>
+                            <option value="minor">Minor medical attention</option>
+                            <option value="major">Major medical attention</option>
+                            <option value="critical">Critical medical attention</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Assigned UN Agency</label>
+                        <select class="form-select">
+                            <option value="">Select agency</option>
+                            <option value="unhcr">UNHCR</option>
+                            <option value="wfp">World Food Programme</option>
+                            <option value="iom">International Organization for Migration</option>
+                            <option value="unicef">UNICEF</option>
+                            <option value="who">World Health Organization</option>
+                        </select>
+                    </div>
+                </form>
+                
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-textarea" placeholder="Enter any additional information about needs assessment, vulnerabilities, or special circumstances..."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn btn-primary">Save Intake Record</button>
+                    <button class="btn btn-secondary">Generate UN Number</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="contact" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Contact Log</h3>
+                </div>
+                
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">UN Number</label>
+                        <input type="text" class="form-input" placeholder="UN-YYYY-XXXXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Type</label>
+                        <select class="form-select">
+                            <option value="">Select contact type</option>
+                            <option value="service-referral">Service Referral</option>
+                            <option value="follow-up">Follow-up</option>
+                            <option value="assessment">Needs Assessment</option>
+                            <option value="documentation">Documentation</option>
+                            <option value="emergency">Emergency Contact</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Date</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Staff Member</label>
+                        <input type="text" class="form-input" placeholder="Staff name">
+                    </div
